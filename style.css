@@ -11,7 +11,7 @@
     margin : 40px auto;
     padding: 30px;
     height: 90%;
-    width : 400px;
+    width : 420px;
     height: 600px;
 }
 .display{  
@@ -30,9 +30,11 @@
 .clear{
     grid-column: span 2;
     width: 100%;
+}
+.clear,.delete{
     background-color: rgb(141, 0, 0);
 }
-.result{
+.equals{
     grid-column: 4;
     grid-row: 4 / span 2;
     height: 100%;
