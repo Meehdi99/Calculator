@@ -1,8 +1,6 @@
-// Add 0 to the default display
 // fix the dot spam
 // Add interaction with keys
-// Optional : color the selected operator
-// Add footer o l3ibat
+// calculate without the equal
 
 let a = 0,
   op = "",
@@ -19,7 +17,7 @@ del.addEventListener("click", () => deletion());
 
 clear.addEventListener(
   "click",
-  () => ((disCurrent.textContent = ""), (a = b = 0))
+  () => ((disCurrent.textContent = "0"), (a = b = 0))
 );
 
 operation.forEach((button) =>
@@ -33,15 +31,17 @@ displayable.forEach((button) =>
 equals.addEventListener("click", () => calculate());
 
 function deletion() {
-  if (!(disCurrent.textContent == "")) {
+  if (!(disCurrent.textContent == "0")) {
     disCurrent.textContent = disCurrent.textContent.slice(0, -1);
   }
 }
 
 function show(dis) {
-  if (disCurrent.textContent.length < 8) {
-    if ((dis >= 0 && dis <= 9) || dis == ".") disCurrent.textContent += dis;
-  }
+  if (disCurrent.textContent != "0") {
+    if (disCurrent.textContent.length < 8) {
+      if ((dis >= 0 && dis <= 9) || dis == ".") disCurrent.textContent += dis;
+    }
+  } else disCurrent.textContent = dis;
 }
 
 function operate(operator) {
