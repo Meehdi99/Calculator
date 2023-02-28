@@ -1,6 +1,5 @@
-// fix the dot spam
 // Add interaction with keys
-// calculate without the equal
+// Display first
 
 let a = 0,
   op = "",
@@ -12,8 +11,26 @@ const disCurrent = document.querySelector(".display");
 const operation = document.querySelectorAll(".operator");
 const equals = document.querySelector(".equals");
 const del = document.querySelector(".delete");
+const dot = document.querySelector(".dot");
 
-del.addEventListener("click", () => deletion());
+window.addEventListener("keydown", (board) => {
+  if (board.key === "Escape") {
+    document.getElementById("clear").click();
+  }
+});
+
+dot.addEventListener("click", () => {
+  if (!disCurrent.textContent.includes(".")) show(".");
+});
+
+del.addEventListener("click", () => {
+  if (!(disCurrent.textContent == "0")) {
+    disCurrent.textContent = disCurrent.textContent.slice(0, -1);
+    if (disCurrent.textContent.length == 0) {
+      disCurrent.textContent = 0;
+    }
+  }
+});
 
 clear.addEventListener(
   "click",
@@ -28,16 +45,15 @@ displayable.forEach((button) =>
   button.addEventListener("click", () => show(button.textContent))
 );
 
-equals.addEventListener("click", () => calculate());
-
-function deletion() {
-  if (!(disCurrent.textContent == "0")) {
-    disCurrent.textContent = disCurrent.textContent.slice(0, -1);
-  }
-}
+equals.addEventListener("click", () => {
+  b = Number(disCurrent.textContent);
+  calculate();
+  a = disCurrent.textContent;
+  op = "";
+});
 
 function show(dis) {
-  if (disCurrent.textContent != "0") {
+  if (disCurrent.textContent != "0" || dis == ".") {
     if (disCurrent.textContent.length < 8) {
       if ((dis >= 0 && dis <= 9) || dis == ".") disCurrent.textContent += dis;
     }
@@ -46,12 +62,18 @@ function show(dis) {
 
 function operate(operator) {
   if (op == "") a = Number(disCurrent.textContent);
-  op = operator;
+  else {
+    b = Number(disCurrent.textContent);
+    calculate();
+    a = Number(disCurrent.textContent);
+    disCurrent.textContent = a;
+    op = "";
+  }
   disCurrent.textContent = "";
+  op = operator;
 }
 
 function calculate() {
-  b = Number(disCurrent.textContent);
   switch (op) {
     case "+":
       display(add(a, b));
@@ -66,8 +88,6 @@ function calculate() {
       display(divide(a, b));
       break;
   }
-  a = disCurrent.textContent;
-  op = "";
 }
 
 function display(res) {
