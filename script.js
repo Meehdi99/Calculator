@@ -1,5 +1,4 @@
 // Add interaction with keys
-// Display first
 
 let a = 0,
   op = "",
@@ -7,7 +6,7 @@ let a = 0,
 
 const displayable = document.querySelectorAll(".dis");
 const clear = document.querySelector(".clear");
-const disCurrent = document.querySelector(".display");
+const currentDis = document.querySelector(".display");
 const operation = document.querySelectorAll(".operator");
 const equals = document.querySelector(".equals");
 const del = document.querySelector(".delete");
@@ -20,21 +19,21 @@ window.addEventListener("keydown", (board) => {
 });
 
 dot.addEventListener("click", () => {
-  if (!disCurrent.textContent.includes(".")) show(".");
+  if (!currentDis.textContent.includes(".")) show(".");
 });
 
 del.addEventListener("click", () => {
-  if (!(disCurrent.textContent == "0")) {
-    disCurrent.textContent = disCurrent.textContent.slice(0, -1);
-    if (disCurrent.textContent.length == 0) {
-      disCurrent.textContent = 0;
+  if (!(currentDis.textContent == "0")) {
+    currentDis.textContent = currentDis.textContent.slice(0, -1);
+    if (currentDis.textContent.length == 0) {
+      currentDis.textContent = 0;
     }
   }
 });
 
 clear.addEventListener(
   "click",
-  () => ((disCurrent.textContent = "0"), (a = b = 0))
+  () => ((currentDis.textContent = "0"), (a = b = 0))
 );
 
 operation.forEach((button) =>
@@ -46,67 +45,55 @@ displayable.forEach((button) =>
 );
 
 equals.addEventListener("click", () => {
-  b = Number(disCurrent.textContent);
+  b = Number(currentDis.textContent);
   calculate();
-  a = disCurrent.textContent;
+  a = currentDis.textContent;
   op = "";
 });
 
-function show(dis) {
-  if (disCurrent.textContent != "0" || dis == ".") {
-    if (disCurrent.textContent.length < 8) {
-      if ((dis >= 0 && dis <= 9) || dis == ".") disCurrent.textContent += dis;
-    }
-  } else disCurrent.textContent = dis;
-}
-
 function operate(operator) {
-  if (op == "") a = Number(disCurrent.textContent);
+  if (op == "") a = Number(currentDis.textContent);
   else {
-    b = Number(disCurrent.textContent);
+    b = Number(currentDis.textContent);
     calculate();
-    a = Number(disCurrent.textContent);
-    disCurrent.textContent = a;
+    a = Number(currentDis.textContent);
     op = "";
   }
-  disCurrent.textContent = "";
+  currentDis.textContent = "";
   op = operator;
 }
 
 function calculate() {
   switch (op) {
     case "+":
-      display(add(a, b));
+      displayRes(add(a, b));
       break;
     case "-":
-      display(subtract(a, b));
+      displayRes(subtract(a, b));
       break;
     case "x":
-      display(multiply(a, b));
+      displayRes(multiply(a, b));
       break;
     case "/":
-      display(divide(a, b));
+      displayRes(divide(a, b));
       break;
   }
 }
 
-function display(res) {
-  if (res.toString().length < 8) disCurrent.textContent = res;
-  else disCurrent.textContent = res.toExponential(2);
+function show(dis) {
+  if (currentDis.textContent != "0" || dis == ".") {
+    if (currentDis.textContent.length < 8) {
+      if ((dis >= 0 && dis <= 9) || dis == ".") currentDis.textContent += dis;
+    }
+  } else currentDis.textContent = dis;
 }
 
-const add = function (a, b) {
-  return a + b;
-};
+function displayRes(res) {
+  if (res.toString().length < 8) currentDis.textContent = res;
+  else currentDis.textContent = res.toExponential(2);
+}
 
-const subtract = function (a, b) {
-  return a - b;
-};
-
-const multiply = function (a, b) {
-  return a * b;
-};
-
-const divide = function (a, b) {
-  return a / b;
-};
+const add = (a, b) => a + b;
+const subtract = (a, b) => a - b;
+const multiply = (a, b) => a * b;
+const divide = (a, b) => a / b;
