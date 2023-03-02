@@ -1,25 +1,19 @@
-// Add interaction with keys
-
 let a = 0,
-  op = "",
-  b = 0;
+  b = 0,
+  op = "";
 
-const displayable = document.querySelectorAll(".dis");
-const clear = document.querySelector(".clear");
-const currentDis = document.querySelector(".display");
 const operation = document.querySelectorAll(".operator");
+const displayable = document.querySelectorAll(".dis");
+const currentDis = document.querySelector(".display");
 const equals = document.querySelector(".equals");
+const clear = document.querySelector(".clear");
 const del = document.querySelector(".delete");
 const dot = document.querySelector(".dot");
 
-window.addEventListener("keydown", (board) => {
-  if (board.key === "Escape") {
-    document.getElementById("clear").click();
-  }
-});
+window.addEventListener("keydown", keysInput);
 
 dot.addEventListener("click", () => {
-  if (!currentDis.textContent.includes(".")) show(".");
+  if (!currentDis.textContent.includes(".")) showDis(".");
 });
 
 del.addEventListener("click", () => {
@@ -41,23 +35,20 @@ operation.forEach((button) =>
 );
 
 displayable.forEach((button) =>
-  button.addEventListener("click", () => show(button.textContent))
+  button.addEventListener("click", () => showDis(button.textContent))
 );
 
 equals.addEventListener("click", () => {
   b = Number(currentDis.textContent);
   calculate();
-  a = currentDis.textContent;
+  a = Number(currentDis.textContent);
   op = "";
 });
 
 function operate(operator) {
   if (op == "") a = Number(currentDis.textContent);
   else {
-    b = Number(currentDis.textContent);
-    calculate();
-    a = Number(currentDis.textContent);
-    op = "";
+    equals.click();
   }
   currentDis.textContent = "";
   op = operator;
@@ -71,16 +62,16 @@ function calculate() {
     case "-":
       displayRes(subtract(a, b));
       break;
-    case "x":
+    case "×":
       displayRes(multiply(a, b));
       break;
-    case "/":
+    case "÷":
       displayRes(divide(a, b));
       break;
   }
 }
 
-function show(dis) {
+function showDis(dis) {
   if (currentDis.textContent != "0" || dis == ".") {
     if (currentDis.textContent.length < 8) {
       if ((dis >= 0 && dis <= 9) || dis == ".") currentDis.textContent += dis;
@@ -91,6 +82,19 @@ function show(dis) {
 function displayRes(res) {
   if (res.toString().length < 8) currentDis.textContent = res;
   else currentDis.textContent = res.toExponential(2);
+}
+
+function keysInput(e) {
+  if (e.key >= 0 && e.key <= 9) showDis(e.key);
+  if (e.key === ".") dot.click();
+  if (e.key === "=" || e.key === "Enter") equals.click();
+  if (e.key === "Backspace") del.click();
+  if (e.key === "Escape") clear.click();
+  if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/") {
+    if (e.key === "*") operate("×");
+    else if (e.key === "/") operate("÷");
+    else operate(e.key);
+  }
 }
 
 const add = (a, b) => a + b;
